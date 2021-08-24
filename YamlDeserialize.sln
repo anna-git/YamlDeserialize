@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31515.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YamlDeserialize", "YamlDeserialize\YamlDeserialize.csproj", "{21D3D8DC-68C0-482E-9CAA-64A3D8816A2D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YamlDeserialize.Console", "YamlDeserialize.Console\YamlDeserialize.Console.csproj", "{D035EFE8-ED91-4938-A6CF-97A64249AC5F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{21D3D8DC-68C0-482E-9CAA-64A3D8816A2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21D3D8DC-68C0-482E-9CAA-64A3D8816A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21D3D8DC-68C0-482E-9CAA-64A3D8816A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21D3D8DC-68C0-482E-9CAA-64A3D8816A2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D035EFE8-ED91-4938-A6CF-97A64249AC5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D035EFE8-ED91-4938-A6CF-97A64249AC5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D035EFE8-ED91-4938-A6CF-97A64249AC5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D035EFE8-ED91-4938-A6CF-97A64249AC5F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1F980CEB-165E-45B4-93F8-876F01AF37DA}
+	EndGlobalSection
+EndGlobal
