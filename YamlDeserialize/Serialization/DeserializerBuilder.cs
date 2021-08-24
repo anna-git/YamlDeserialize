@@ -24,7 +24,6 @@ using System.Collections.Generic;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization.NamingConventions;
 using YamlDotNet.Serialization.NodeDeserializers;
-using YamlDotNet.Serialization.NodeTypeResolvers;
 using YamlDotNet.Serialization.ObjectFactories;
 using YamlDotNet.Serialization.Schemas;
 using YamlDotNet.Serialization.TypeInspectors;
@@ -43,10 +42,8 @@ namespace YamlDotNet.Serialization
     {
         private Lazy<IObjectFactory> objectFactory;
         private readonly LazyComponentRegistrationList<Nothing, INodeDeserializer> nodeDeserializerFactories;
-        private readonly LazyComponentRegistrationList<Nothing, INodeTypeResolver> nodeTypeResolverFactories;
         private readonly Dictionary<TagName, Type> tagMappings;
         private readonly Dictionary<Type, Type> typeMappings;
-        private bool ignoreUnmatched;
 
         /// <summary>
         /// Initializes a new <see cref="DeserializerBuilder" /> using the default component registrations.
@@ -83,283 +80,10 @@ namespace YamlDotNet.Serialization
                 { typeof(DictionaryNodeDeserializer), _ => new DictionaryNodeDeserializer(objectFactory.Value) },
                 { typeof(CollectionNodeDeserializer), _ => new CollectionNodeDeserializer(objectFactory.Value) },
                 { typeof(EnumerableNodeDeserializer), _ => new EnumerableNodeDeserializer() },
-                { typeof(ObjectNodeDeserializer), _ => new ObjectNodeDeserializer(objectFactory.Value, BuildTypeInspector(), ignoreUnmatched) }
-            };
-
-            nodeTypeResolverFactories = new LazyComponentRegistrationList<Nothing, INodeTypeResolver>
-            {
-                { typeof(MappingNodeTypeResolver), _ => new MappingNodeTypeResolver(typeMappings) },
-                { typeof(YamlConvertibleTypeResolver), _ => new YamlConvertibleTypeResolver() },
-                { typeof(TagNodeTypeResolver), _ => new TagNodeTypeResolver(tagMappings) },
-                { typeof(PreventUnknownTagsNodeTypeResolver), _ => new PreventUnknownTagsNodeTypeResolver() },
-                { typeof(DefaultContainersNodeTypeResolver), _ => new DefaultContainersNodeTypeResolver() }
             };
         }
 
         protected override DeserializerBuilder Self { get { return this; } }
-
-        /// <summary>
-        /// Sets the <see cref="IObjectFactory" /> that will be used by the deserializer.
-        /// </summary>
-        public DeserializerBuilder WithObjectFactory(IObjectFactory objectFactory)
-        {
-            if (objectFactory == null)
-            {
-                throw new ArgumentNullException(nameof(objectFactory));
-            }
-
-            this.objectFactory = new Lazy<IObjectFactory>(() => objectFactory, true);
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the <see cref="IObjectFactory" /> that will be used by the deserializer.
-        /// </summary>
-        public DeserializerBuilder WithObjectFactory(Func<Type, object> objectFactory)
-        {
-            if (objectFactory == null)
-            {
-                throw new ArgumentNullException(nameof(objectFactory));
-            }
-
-            return WithObjectFactory(new LambdaObjectFactory(objectFactory));
-        }
-
-        /// <summary>
-        /// Registers an additional <see cref="INodeDeserializer" /> to be used by the deserializer.
-        /// </summary>
-        public DeserializerBuilder WithNodeDeserializer(INodeDeserializer nodeDeserializer)
-        {
-            return WithNodeDeserializer(nodeDeserializer, w => w.OnTop());
-        }
-
-        /// <summary>
-        /// Registers an additional <see cref="INodeDeserializer" /> to be used by the deserializer.
-        /// </summary>
-        /// <param name="nodeDeserializer"></param>
-        /// <param name="where">Configures the location where to insert the <see cref="INodeDeserializer" /></param>
-        public DeserializerBuilder WithNodeDeserializer(
-            INodeDeserializer nodeDeserializer,
-            Action<IRegistrationLocationSelectionSyntax<INodeDeserializer>> where
-        )
-        {
-            if (nodeDeserializer == null)
-            {
-                throw new ArgumentNullException(nameof(nodeDeserializer));
-            }
-
-            if (where == null)
-            {
-                throw new ArgumentNullException(nameof(where));
-            }
-
-            where(nodeDeserializerFactories.CreateRegistrationLocationSelector(nodeDeserializer.GetType(), _ => nodeDeserializer));
-            return this;
-        }
-
-        /// <summary>
-        /// Registers an additional <see cref="INodeDeserializer" /> to be used by the deserializer.
-        /// </summary>
-        /// <param name="nodeDeserializerFactory">A factory that creates the <see cref="INodeDeserializer" /> based on a previously registered <see cref="INodeDeserializer" />.</param>
-        /// <param name="where">Configures the location where to insert the <see cref="INodeDeserializer" /></param>
-        public DeserializerBuilder WithNodeDeserializer<TNodeDeserializer>(
-            WrapperFactory<INodeDeserializer, TNodeDeserializer> nodeDeserializerFactory,
-            Action<ITrackingRegistrationLocationSelectionSyntax<INodeDeserializer>> where
-        )
-            where TNodeDeserializer : INodeDeserializer
-        {
-            if (nodeDeserializerFactory == null)
-            {
-                throw new ArgumentNullException(nameof(nodeDeserializerFactory));
-            }
-
-            if (where == null)
-            {
-                throw new ArgumentNullException(nameof(where));
-            }
-
-            where(nodeDeserializerFactories.CreateTrackingRegistrationLocationSelector(typeof(TNodeDeserializer), (wrapped, _) => nodeDeserializerFactory(wrapped)));
-            return this;
-        }
-
-        /// <summary>
-        /// Unregisters an existing <see cref="INodeDeserializer" /> of type <typeparam name="TNodeDeserializer" />.
-        /// </summary>
-        public DeserializerBuilder WithoutNodeDeserializer<TNodeDeserializer>()
-            where TNodeDeserializer : INodeDeserializer
-        {
-            return WithoutNodeDeserializer(typeof(TNodeDeserializer));
-        }
-
-        /// <summary>
-        /// Unregisters an existing <see cref="INodeDeserializer" /> of type <param name="nodeDeserializerType" />.
-        /// </summary>
-        public DeserializerBuilder WithoutNodeDeserializer(Type nodeDeserializerType)
-        {
-            if (nodeDeserializerType == null)
-            {
-                throw new ArgumentNullException(nameof(nodeDeserializerType));
-            }
-
-            nodeDeserializerFactories.Remove(nodeDeserializerType);
-            return this;
-        }
-
-        /// <summary>
-        /// Registers an additional <see cref="INodeTypeResolver" /> to be used by the deserializer.
-        /// </summary>
-        public DeserializerBuilder WithNodeTypeResolver(INodeTypeResolver nodeTypeResolver)
-        {
-            return WithNodeTypeResolver(nodeTypeResolver, w => w.OnTop());
-        }
-
-        /// <summary>
-        /// Registers an additional <see cref="INodeTypeResolver" /> to be used by the deserializer.
-        /// </summary>
-        /// <param name="nodeTypeResolver"></param>
-        /// <param name="where">Configures the location where to insert the <see cref="INodeTypeResolver" /></param>
-        public DeserializerBuilder WithNodeTypeResolver(
-            INodeTypeResolver nodeTypeResolver,
-            Action<IRegistrationLocationSelectionSyntax<INodeTypeResolver>> where
-        )
-        {
-            if (nodeTypeResolver == null)
-            {
-                throw new ArgumentNullException(nameof(nodeTypeResolver));
-            }
-
-            if (where == null)
-            {
-                throw new ArgumentNullException(nameof(where));
-            }
-
-            where(nodeTypeResolverFactories.CreateRegistrationLocationSelector(nodeTypeResolver.GetType(), _ => nodeTypeResolver));
-            return this;
-        }
-
-        /// <summary>
-        /// Registers an additional <see cref="INodeTypeResolver" /> to be used by the deserializer.
-        /// </summary>
-        /// <param name="nodeTypeResolverFactory">A factory that creates the <see cref="INodeTypeResolver" /> based on a previously registered <see cref="INodeTypeResolver" />.</param>
-        /// <param name="where">Configures the location where to insert the <see cref="INodeTypeResolver" /></param>
-        public DeserializerBuilder WithNodeTypeResolver<TNodeTypeResolver>(
-            WrapperFactory<INodeTypeResolver, TNodeTypeResolver> nodeTypeResolverFactory,
-            Action<ITrackingRegistrationLocationSelectionSyntax<INodeTypeResolver>> where
-        )
-            where TNodeTypeResolver : INodeTypeResolver
-        {
-            if (nodeTypeResolverFactory == null)
-            {
-                throw new ArgumentNullException(nameof(nodeTypeResolverFactory));
-            }
-
-            if (where == null)
-            {
-                throw new ArgumentNullException(nameof(where));
-            }
-
-            where(nodeTypeResolverFactories.CreateTrackingRegistrationLocationSelector(typeof(TNodeTypeResolver), (wrapped, _) => nodeTypeResolverFactory(wrapped)));
-            return this;
-        }
-
-        /// <summary>
-        /// Unregisters an existing <see cref="INodeTypeResolver" /> of type <typeparam name="TNodeTypeResolver" />.
-        /// </summary>
-        public DeserializerBuilder WithoutNodeTypeResolver<TNodeTypeResolver>()
-            where TNodeTypeResolver : INodeTypeResolver
-        {
-            return WithoutNodeTypeResolver(typeof(TNodeTypeResolver));
-        }
-
-        /// <summary>
-        /// Unregisters an existing <see cref="INodeTypeResolver" /> of type <param name="nodeTypeResolverType" />.
-        /// </summary>
-        public DeserializerBuilder WithoutNodeTypeResolver(Type nodeTypeResolverType)
-        {
-            if (nodeTypeResolverType == null)
-            {
-                throw new ArgumentNullException(nameof(nodeTypeResolverType));
-            }
-
-            nodeTypeResolverFactories.Remove(nodeTypeResolverType);
-            return this;
-        }
-
-        /// <summary>
-        /// Registers a tag mapping.
-        /// </summary>
-        public override DeserializerBuilder WithTagMapping(TagName tag, Type type)
-        {
-            if (tag.IsEmpty)
-            {
-                throw new ArgumentException("Non-specific tags cannot be maped");
-            }
-
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            if (tagMappings.TryGetValue(tag, out var alreadyRegisteredType))
-            {
-                throw new ArgumentException($"Type already has a registered type '{alreadyRegisteredType.FullName}' for tag '{tag}'", nameof(tag));
-            }
-
-            tagMappings.Add(tag, type);
-            return this;
-        }
-
-        /// <summary>
-        /// Registers a type mapping using the default object factory.
-        /// </summary>
-        public DeserializerBuilder WithTypeMapping<TInterface, TConcrete>()
-            where TConcrete : TInterface
-        {
-            var interfaceType = typeof(TInterface);
-            var concreteType = typeof(TConcrete);
-
-            if (!interfaceType.IsAssignableFrom(concreteType))
-            {
-                throw new InvalidOperationException($"The type '{concreteType.Name}' does not implement interface '{interfaceType.Name}'.");
-            }
-
-            if (typeMappings.ContainsKey(interfaceType))
-            {
-                typeMappings[interfaceType] = concreteType;
-            }
-            else
-            {
-                typeMappings.Add(interfaceType, concreteType);
-            }
-
-            return this;
-        }
-
-        /// <summary>
-        /// Unregisters an existing tag mapping.
-        /// </summary>
-        public DeserializerBuilder WithoutTagMapping(TagName tag)
-        {
-            if (tag.IsEmpty)
-            {
-                throw new ArgumentException("Non-specific tags cannot be maped");
-            }
-
-            if (!tagMappings.Remove(tag))
-            {
-                throw new KeyNotFoundException($"Tag '{tag}' is not registered");
-            }
-            return this;
-        }
-
-        /// <summary>
-        /// Instructs the deserializer to ignore unmatched properties instead of throwing an exception.
-        /// </summary>
-        public DeserializerBuilder IgnoreUnmatchedProperties()
-        {
-            ignoreUnmatched = true;
-            return this;
-        }
 
         /// <summary>
         /// Creates a new <see cref="Deserializer" /> according to the current configuration.
@@ -377,10 +101,7 @@ namespace YamlDotNet.Serialization
         public IValueDeserializer BuildValueDeserializer()
         {
             return new AliasValueDeserializer(
-                new NodeValueDeserializer(
-                    nodeDeserializerFactories.BuildComponentList(),
-                    nodeTypeResolverFactories.BuildComponentList()
-                )
+                new NodeValueDeserializer(nodeDeserializerFactories.BuildComponentList())
             );
         }
     }

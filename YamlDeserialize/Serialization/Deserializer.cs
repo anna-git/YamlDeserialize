@@ -76,9 +76,8 @@ namespace YamlDotNet.Serialization
 
         public object Deserialize(TextReader input)
         {
-            return Deserialize(input);
+            return Deserialize(new Parser(input));
         }
-
 
         /// <summary>
         /// Deserializes an object of the specified type.
