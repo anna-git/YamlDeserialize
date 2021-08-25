@@ -1,40 +1,14 @@
-using System.IO;
-using Xunit;
-using System.Linq;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
+﻿using System;
 using System.Collections.Generic;
-using YamlDotNet.Serialization.NodeTypeResolvers;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace YamlDeserialize.UnitTests
 {
-    public class UnitTest1
+    public class Helper
     {
-        [Theory]
-        [InlineData("rules")]
-        [InlineData("tags")]
-        [InlineData("test")]
-        public void DeserializeSimple(string filename)
-        {
-            using (var sr = new StreamReader($"{filename}.yml"))
-            {
-                var deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).
-                    Build();
-                var resultObj = deserializer.Deserialize(sr);
-                var result = resultObj as Dictionary<object, object>;
-                sr.BaseStream.Seek(0, SeekOrigin.Begin);
-                var ourDserializer = new YamlDeserializer.Serialization.DeserializerBuilder().WithNamingConvention(YamlDeserializer.Serialization.NamingConventions.CamelCaseNamingConvention.Instance).Build();
-                var resultddObj = ourDserializer.Deserialize(sr);
-                var resultdd = resultddObj as Dictionary<object, object>;
-                Xunit.Assert.NotNull(result);
-                Xunit.Assert.NotNull(resultdd);
-
-                bool v = CompareDictionaries(result, resultdd);
-                Xunit.Assert.True(v);
-            }
-        }
-
-        public bool CompareDictionaries(IDictionary<object, object> model, IDictionary<object, object> dic2)
+        public static bool CompareDictionaries(IDictionary<object, object> model, IDictionary<object, object> dic2)
         {
             if (model.Count != dic2.Count)
             {
@@ -74,14 +48,14 @@ namespace YamlDeserialize.UnitTests
             return true;
         }
 
-        private bool CompareList(List<object> current, List<object> other, int index = 0)
+        private static bool CompareList(List<object> current, List<object> other, int index = 0)
         {
             var length = current.Count;
             for (int i = 0; i < length; i++)
             {
                 if (current[i].GetType() != other[i].GetType())
                     return false;
-                else if(current[i] is IDictionary<object, object> innerdic)
+                else if (current[i] is IDictionary<object, object> innerdic)
                 {
                     var res = CompareDictionaries(innerdic, other[i] as IDictionary<object, object>);
                     if (!res)

@@ -81,10 +81,7 @@ namespace YamlDeserializer.RepresentationModel
         /// <param name="anchor">The anchor.</param>
         /// <param name="node">The node that was retrieved.</param>
         /// <returns>true if the anchor was found; otherwise false.</returns>
-        public bool TryGetNode(AnchorName anchor, out YamlNode node)
-        {
-            return anchors.TryGetValue(anchor, out node);
-        }
+        public bool TryGetNode(AnchorName anchor, out YamlNode node) => anchors.TryGetValue(anchor, out node);
 
         /// <summary>
         /// Adds the specified node to the collection of nodes with unresolved aliases.
@@ -92,10 +89,7 @@ namespace YamlDeserializer.RepresentationModel
         /// <param name="node">
         /// The <see cref="YamlNode"/> that has unresolved aliases.
         /// </param>
-        public void AddNodeWithUnresolvedAliases(YamlNode node)
-        {
-            nodesWithUnresolvedAliases.Add(node);
-        }
+        public void AddNodeWithUnresolvedAliases(YamlNode node) => nodesWithUnresolvedAliases.Add(node);
 
         /// <summary>
         /// Resolves the aliases that could not be resolved while loading the document.

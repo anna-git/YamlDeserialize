@@ -1,5 +1,4 @@
-﻿---
-a: 123                     # an integer
+﻿a: 123                     # an integer
 b: "123"                   # a string, disambiguated by quotes
 c: 123.0                   # a float
 d: !!float 123             # also a float via explicit data type prefixed by (!!)
