@@ -122,13 +122,7 @@ namespace YamlDotNet.Core
         /// Gets the current position inside the input stream.
         /// </summary>
         /// <value>The current position.</value>
-        public Mark CurrentPosition
-        {
-            get
-            {
-                return cursor.Mark();
-            }
-        }
+        public Mark CurrentPosition => cursor.Mark();
 
         /// <summary>
         /// Moves to the next token.
@@ -237,10 +231,7 @@ namespace YamlDotNet.Core
             tokenAvailable = true;
         }
 
-        private static bool StartsWith(StringBuilder what, char start)
-        {
-            return what.Length > 0 && what[0] == start;
-        }
+        private static bool StartsWith(StringBuilder what, char start) => what.Length > 0 && what[0] == start;
 
         /// <summary>
         /// Check the list of potential simple keys and remove the positions that

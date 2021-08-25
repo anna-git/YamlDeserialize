@@ -30,10 +30,7 @@ namespace YamlDotNet.Serialization.NodeDeserializers
     {
         private readonly IEnumerable<IYamlTypeConverter> converters;
 
-        public TypeConverterNodeDeserializer(IEnumerable<IYamlTypeConverter> converters)
-        {
-            this.converters = converters ?? throw new ArgumentNullException(nameof(converters));
-        }
+        public TypeConverterNodeDeserializer(IEnumerable<IYamlTypeConverter> converters) => this.converters = converters ?? throw new ArgumentNullException(nameof(converters));
 
         bool INodeDeserializer.Deserialize(IParser parser, Type expectedType, Func<IParser, Type, object> nestedObjectDeserializer, out object value)
         {

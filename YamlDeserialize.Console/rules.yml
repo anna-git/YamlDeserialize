@@ -22,6 +22,7 @@ events:
   - id: crs-913-120
     name: Found request filename/argument associated with security scanner
     test: *flag
+    test2: !!int "34"
     tags:
       type: security_scanner
       crs_id: '913120'

@@ -139,8 +139,7 @@ namespace YamlDotNet.Helpers
 #pragma warning disable 8767 // Nullability of reference types in type of parameter ... doesn't match implicitly implemented member
 #endif
 
-        public bool TryGetValue(TKey key, out TValue value) =>
-            dictionary.TryGetValue(key, out value);
+        public bool TryGetValue(TKey key, out TValue value) => dictionary.TryGetValue(key, out value);
 
 #if !(NETCOREAPP3_1)
 #pragma warning restore 8767
@@ -187,8 +186,7 @@ namespace YamlDotNet.Helpers
                 }
             }
 
-            public IEnumerator<TKey> GetEnumerator() =>
-                orderedDictionary.list.Select(kvp => kvp.Key).GetEnumerator();
+            public IEnumerator<TKey> GetEnumerator() => orderedDictionary.list.Select(kvp => kvp.Key).GetEnumerator();
 
             public bool Remove(TKey item) => throw new NotSupportedException();
 
@@ -209,10 +207,7 @@ namespace YamlDotNet.Helpers
 
             public bool Contains(TValue item) => orderedDictionary.dictionary.Values.Contains(item);
 
-            public ValueCollection(OrderedDictionary<TKey, TValue> orderedDictionary)
-            {
-                this.orderedDictionary = orderedDictionary;
-            }
+            public ValueCollection(OrderedDictionary<TKey, TValue> orderedDictionary) => this.orderedDictionary = orderedDictionary;
 
             public void CopyTo(TValue[] array, int arrayIndex)
             {
@@ -222,8 +217,7 @@ namespace YamlDotNet.Helpers
                 }
             }
 
-            public IEnumerator<TValue> GetEnumerator() =>
-                orderedDictionary.list.Select(kvp => kvp.Value).GetEnumerator();
+            public IEnumerator<TValue> GetEnumerator() => orderedDictionary.list.Select(kvp => kvp.Value).GetEnumerator();
 
             public bool Remove(TValue item) => throw new NotSupportedException();
 
