@@ -162,19 +162,9 @@ namespace YamlDotNet.RepresentationModel
         /// <summary>
         /// Gets the type of node.
         /// </summary>
-        public override YamlNodeType NodeType
-        {
-            get { return YamlNodeType.Scalar; }
-        }
+        public override YamlNodeType NodeType => YamlNodeType.Scalar;
 
-        void IYamlConvertible.Read(IParser parser, Type expectedType, ObjectDeserializer nestedObjectDeserializer)
-        {
-            Load(parser, new DocumentLoadingState());
-        }
+        void IYamlConvertible.Read(IParser parser, Type expectedType, ObjectDeserializer nestedObjectDeserializer) => Load(parser, new DocumentLoadingState());
 
-        void IYamlConvertible.Write(IEmitter emitter, ObjectSerializer nestedObjectSerializer)
-        {
-            Emit(emitter, new EmitterState());
-        }
     }
 }

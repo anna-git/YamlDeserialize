@@ -70,16 +70,7 @@ namespace YamlDotNet.Serialization
             Debug.Assert(depth == 0);
         }
 
-        /// <summary>
-        /// Writes this object's state to a YAML emitter.
-        /// </summary>
-        void IYamlConvertible.Write(IEmitter emitter, ObjectSerializer nestedObjectSerializer)
-        {
-            foreach (var item in events)
-            {
-                emitter.Emit(item);
-            }
-        }
+       
         #endregion
     }
 }

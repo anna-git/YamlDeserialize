@@ -42,34 +42,16 @@ namespace YamlDotNet.Serialization
             NegativeInfinitySymbol = "-.inf"
         };
 
-        public static string FormatNumber(object number)
-        {
-            return Convert.ToString(number, NumberFormat);
-        }
+        public static string FormatNumber(object number) => Convert.ToString(number, NumberFormat);
 
-        public static string FormatNumber(double number)
-        {
-            return number.ToString("G17", NumberFormat);
-        }
+        public static string FormatNumber(double number) => number.ToString("G17", NumberFormat);
 
-        public static string FormatNumber(float number)
-        {
-            return number.ToString("G17", NumberFormat);
-        }
+        public static string FormatNumber(float number) => number.ToString("G17", NumberFormat);
 
-        public static string FormatBoolean(object boolean)
-        {
-            return boolean.Equals(true) ? "true" : "false";
-        }
+        public static string FormatBoolean(object boolean) => boolean.Equals(true) ? "true" : "false";
 
-        public static string FormatDateTime(object dateTime)
-        {
-            return ((DateTime)dateTime).ToString("o", CultureInfo.InvariantCulture);
-        }
+        public static string FormatDateTime(object dateTime) => ((DateTime)dateTime).ToString("o", CultureInfo.InvariantCulture);
 
-        public static string FormatTimeSpan(object timeSpan)
-        {
-            return ((TimeSpan)timeSpan).ToString();
-        }
+        public static string FormatTimeSpan(object timeSpan) => ((TimeSpan)timeSpan).ToString();
     }
 }

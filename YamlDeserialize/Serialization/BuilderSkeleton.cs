@@ -61,10 +61,7 @@ namespace YamlDotNet.Serialization
             return Self;
         }
 
-        protected IEnumerable<IYamlTypeConverter> BuildTypeConverters()
-        {
-            return typeConverterFactories.BuildComponentList();
-        }
+        protected IEnumerable<IYamlTypeConverter> BuildTypeConverters() => typeConverterFactories.BuildComponentList();
     }
 
     /// <summary>

@@ -387,11 +387,6 @@ namespace YamlDotNet.RepresentationModel
             Load(parser, new DocumentLoadingState());
         }
 
-        void IYamlConvertible.Write(IEmitter emitter, ObjectSerializer nestedObjectSerializer)
-        {
-            Emit(emitter, new EmitterState());
-        }
-
         /// <summary>
         /// Creates a <see cref="YamlMappingNode" /> containing a key-value pair for each property of the specified object.
         /// </summary>
