@@ -33,10 +33,7 @@ namespace YamlDotNet.Core
         private int current;
         public int Maximum { get; }
 
-        public RecursionLevel(int maximum)
-        {
-            Maximum = maximum;
-        }
+        public RecursionLevel(int maximum) => Maximum = maximum;
 
         /// <summary>
         /// Increments the <see cref="current"/> recursion level,

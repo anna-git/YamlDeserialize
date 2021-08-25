@@ -42,8 +42,7 @@ namespace YamlDotNet.Serialization
         /// <remarks>
         /// To customize the behavior of the deserializer, use <see cref="DeserializerBuilder" />.
         /// </remarks>
-        public Deserializer()
-            : this(new DeserializerBuilder().BuildValueDeserializer())
+        public Deserializer() : this(new DeserializerBuilder().BuildValueDeserializer())
         {
         }
 
@@ -51,20 +50,14 @@ namespace YamlDotNet.Serialization
         /// This constructor is private to discourage its use.
         /// To invoke it, call the <see cref="FromValueDeserializer"/> method.
         /// </remarks>
-        private Deserializer(IValueDeserializer valueDeserializer)
-        {
-            this.valueDeserializer = valueDeserializer ?? throw new ArgumentNullException(nameof(valueDeserializer));
-        }
+        private Deserializer(IValueDeserializer valueDeserializer) => this.valueDeserializer = valueDeserializer ?? throw new ArgumentNullException(nameof(valueDeserializer));
 
         /// <summary>
         /// Creates a new <see cref="Deserializer" /> that uses the specified <see cref="IValueDeserializer" />.
         /// This method is available for advanced scenarios. The preferred way to customize the behavior of the
         /// deserializer is to use <see cref="DeserializerBuilder" />.
         /// </summary>
-        public static Deserializer FromValueDeserializer(IValueDeserializer valueDeserializer)
-        {
-            return new Deserializer(valueDeserializer);
-        }
+        public static Deserializer FromValueDeserializer(IValueDeserializer valueDeserializer) => new Deserializer(valueDeserializer);
 
         public object Deserialize(string input)
         {

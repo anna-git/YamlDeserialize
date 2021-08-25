@@ -10,7 +10,7 @@ namespace YamlDeserialize.Console
         static void Main(string[] args)
         {
             var deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build();
-            var sr = Assembly.GetExecutingAssembly().GetManifestResourceStream("YamlDeserialize.Console.rules.yml");
+            var sr = Assembly.GetExecutingAssembly().GetManifestResourceStream("YamlDeserialize.Console.test.yml");
             var reader = new StreamReader(sr);
             var res = deserializer.Deserialize(reader);
         }

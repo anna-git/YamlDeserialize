@@ -32,10 +32,7 @@ namespace YamlDotNet.RepresentationModel
         /// <param name="stream">
         /// The <see cref="YamlStream"/> that is being visited.
         /// </param>
-        public virtual void Visit(YamlStream stream)
-        {
-            VisitChildren(stream);
-        }
+        public virtual void Visit(YamlStream stream) => VisitChildren(stream);
 
         /// <summary>
         /// Called when this object is visiting a <see cref="YamlDocument"/>.
@@ -43,10 +40,7 @@ namespace YamlDotNet.RepresentationModel
         /// <param name="document">
         /// The <see cref="YamlDocument"/> that is being visited.
         /// </param>
-        public virtual void Visit(YamlDocument document)
-        {
-            VisitChildren(document);
-        }
+        public virtual void Visit(YamlDocument document) => VisitChildren(document);
 
         /// <summary>
         /// Called when this object is visiting a <see cref="YamlScalarNode"/>.
@@ -65,10 +59,7 @@ namespace YamlDotNet.RepresentationModel
         /// <param name="sequence">
         /// The <see cref="YamlSequenceNode"/> that is being visited.
         /// </param>
-        public virtual void Visit(YamlSequenceNode sequence)
-        {
-            VisitChildren(sequence);
-        }
+        public virtual void Visit(YamlSequenceNode sequence) => VisitChildren(sequence);
 
         /// <summary>
         /// Called when this object is visiting a <see cref="YamlMappingNode"/>.
@@ -76,10 +67,7 @@ namespace YamlDotNet.RepresentationModel
         /// <param name="mapping">
         /// The <see cref="YamlMappingNode"/> that is being visited.
         /// </param>
-        public virtual void Visit(YamlMappingNode mapping)
-        {
-            VisitChildren(mapping);
-        }
+        public virtual void Visit(YamlMappingNode mapping) => VisitChildren(mapping);
 
         /// <summary>
         /// Called when this object is visiting a key-value pair.

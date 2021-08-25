@@ -31,10 +31,6 @@ namespace YamlDotNet.Serialization
     {
         internal INamingConvention namingConvention = NullNamingConvention.Instance;
 
-        internal BuilderSkeleton(ITypeResolver typeResolver)
-        {
-        }
-
         protected abstract TBuilder Self { get; }
 
         /// <summary>

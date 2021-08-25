@@ -51,13 +51,6 @@ namespace YamlDotNet.Serialization.NodeDeserializers
 
                 value = objectFactory.Create(expectedType);
                 list = value as IList;
-                if (list == null)
-                {
-                    // Uncommon case where a type implements IList<T> but not IList
-                    var genericListType = ReflectionUtility.GetImplementedGenericInterface(expectedType, typeof(IList<>));
-                    canUpdate = genericListType != null;
-                    list = (IList)Activator.CreateInstance(typeof(GenericCollectionToNonGenericAdapter<>).MakeGenericType(itemType), value);
-                }
             }
             else if (typeof(IList).IsAssignableFrom(expectedType))
             {

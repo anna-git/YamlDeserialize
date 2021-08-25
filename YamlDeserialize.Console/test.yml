@@ -1,0 +1,34 @@
+﻿aliases:
+        - &damageall
+          tool: ALL
+          drop: AIR
+          damageattacker: 1
+        - &dropnothing
+          tool: ALL
+          drop: NOTHING
+          chance: 100
+        - &defaultdroplow  # this alias has a low chance of dropping default item
+          tool: ALL
+          drop: DEFAULT
+          chance: 5
+        - &specitem  # this alias is being used specifically for overwriting the "tool" condition later
+          tool: ALL
+          drop: DEFAULT
+          chance: 100
+          exclusive: 1
+
+otherblocks:
+#stones
+    STONE:
+        - *dropnothing
+        - *damageall
+        - *defaultdroplow
+        - <<: *specitem
+          tool: ANY_PICKAXE
+
+    DIRT:
+        - *dropnothing
+        - *damageall
+        - *defaultdroplow
+        - <<: *specitem
+          tool: ANY_SPADE

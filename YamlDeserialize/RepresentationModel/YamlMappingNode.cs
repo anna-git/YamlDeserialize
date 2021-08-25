@@ -150,40 +150,28 @@ namespace YamlDotNet.RepresentationModel
         /// </summary>
         /// <param name="key">The key node.</param>
         /// <param name="value">The value node.</param>
-        public void Add(YamlNode key, YamlNode value)
-        {
-            children.Add(key, value);
-        }
+        public void Add(YamlNode key, YamlNode value) => children.Add(key, value);
 
         /// <summary>
         /// Adds the specified mapping to the <see cref="Children"/> collection.
         /// </summary>
         /// <param name="key">The key node.</param>
         /// <param name="value">The value node.</param>
-        public void Add(string key, YamlNode value)
-        {
-            children.Add(new YamlScalarNode(key), value);
-        }
+        public void Add(string key, YamlNode value) => children.Add(new YamlScalarNode(key), value);
 
         /// <summary>
         /// Adds the specified mapping to the <see cref="Children"/> collection.
         /// </summary>
         /// <param name="key">The key node.</param>
         /// <param name="value">The value node.</param>
-        public void Add(YamlNode key, string value)
-        {
-            children.Add(key, new YamlScalarNode(value));
-        }
+        public void Add(YamlNode key, string value) => children.Add(key, new YamlScalarNode(value));
 
         /// <summary>
         /// Adds the specified mapping to the <see cref="Children"/> collection.
         /// </summary>
         /// <param name="key">The key node.</param>
         /// <param name="value">The value node.</param>
-        public void Add(string key, string value)
-        {
-            children.Add(new YamlScalarNode(key), new YamlScalarNode(value));
-        }
+        public void Add(string key, string value) => children.Add(new YamlScalarNode(key), new YamlScalarNode(value));
 
         /// <summary>
         /// Resolves the aliases that could not be resolved when the node was created.
@@ -254,10 +242,7 @@ namespace YamlDotNet.RepresentationModel
         /// <param name="visitor">
         /// A <see cref="IYamlVisitor"/>.
         /// </param>
-        public override void Accept(IYamlVisitor visitor)
-        {
-            visitor.Visit(this);
-        }
+        public override void Accept(IYamlVisitor visitor) => visitor.Visit(this);
 
         /// <summary />
         public override bool Equals(object obj)

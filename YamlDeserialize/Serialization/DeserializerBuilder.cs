@@ -21,11 +21,9 @@
 
 using System;
 using System.Collections.Generic;
-using YamlDotNet.Core;
+using System.Linq;
 using YamlDotNet.Serialization.NodeDeserializers;
 using YamlDotNet.Serialization.ObjectFactories;
-using YamlDotNet.Serialization.Schemas;
-using YamlDotNet.Serialization.TypeResolvers;
 using YamlDotNet.Serialization.ValueDeserializers;
 
 namespace YamlDotNet.Serialization
@@ -46,7 +44,6 @@ namespace YamlDotNet.Serialization
         /// Initializes a new <see cref="DeserializerBuilder" /> using the default component registrations.
         /// </summary>
         public DeserializerBuilder()
-            : base(new StaticTypeResolver())
         {
             typeMappings = new Dictionary<Type, Type>();
             objectFactory = new Lazy<IObjectFactory>(() => new DefaultObjectFactory(typeMappings), true);
@@ -73,6 +70,6 @@ namespace YamlDotNet.Serialization
         /// This method is available for advanced scenarios. The preferred way to customize the behavior of the
         /// deserializer is to use the <see cref="Build" /> method.
         /// </summary>
-        public IValueDeserializer BuildValueDeserializer() => new AliasValueDeserializer(new NodeValueDeserializer(nodeDeserializerFactories.BuildComponentList()));
+        public IValueDeserializer BuildValueDeserializer() => new AliasValueDeserializer(new NodeValueDeserializer(nodeDeserializerFactories.Select(factory => factory(default)).ToList()));
     }
 }
