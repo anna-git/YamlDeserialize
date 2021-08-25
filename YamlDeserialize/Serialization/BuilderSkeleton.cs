@@ -24,7 +24,6 @@ using System.Collections.Generic;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization.Converters;
 using YamlDotNet.Serialization.NamingConventions;
-using YamlDotNet.Serialization.TypeInspectors;
 
 namespace YamlDotNet.Serialization
 {
@@ -37,7 +36,6 @@ namespace YamlDotNet.Serialization
         internal ITypeResolver typeResolver;
         internal readonly YamlAttributeOverrides overrides;
         internal readonly LazyComponentRegistrationList<Nothing, IYamlTypeConverter> typeConverterFactories;
-        internal readonly LazyComponentRegistrationList<ITypeInspector, ITypeInspector> typeInspectorFactories;
 
         internal BuilderSkeleton(ITypeResolver typeResolver)
         {
@@ -49,7 +47,6 @@ namespace YamlDotNet.Serialization
                 { typeof(SystemTypeConverter), _ => new SystemTypeConverter() }
             };
 
-            typeInspectorFactories = new LazyComponentRegistrationList<ITypeInspector, ITypeInspector>();
             this.typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
         }
 

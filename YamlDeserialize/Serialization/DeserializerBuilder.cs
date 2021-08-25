@@ -22,11 +22,9 @@
 using System;
 using System.Collections.Generic;
 using YamlDotNet.Core;
-using YamlDotNet.Serialization.NamingConventions;
 using YamlDotNet.Serialization.NodeDeserializers;
 using YamlDotNet.Serialization.ObjectFactories;
 using YamlDotNet.Serialization.Schemas;
-using YamlDotNet.Serialization.TypeInspectors;
 using YamlDotNet.Serialization.TypeResolvers;
 using YamlDotNet.Serialization.ValueDeserializers;
 
@@ -63,12 +61,6 @@ namespace YamlDotNet.Serialization
                 { JsonSchema.Tags.Int, typeof(int) },
                 { DefaultSchema.Tags.Timestamp, typeof(DateTime) }
             };
-
-            typeInspectorFactories.Add(typeof(CachedTypeInspector), inner => new CachedTypeInspector(inner));
-            typeInspectorFactories.Add(typeof(NamingConventionTypeInspector), inner => namingConvention is NullNamingConvention ? inner : new NamingConventionTypeInspector(inner, namingConvention));
-            typeInspectorFactories.Add(typeof(YamlAttributesTypeInspector), inner => new YamlAttributesTypeInspector(inner));
-            typeInspectorFactories.Add(typeof(YamlAttributeOverridesInspector), inner => overrides != null ? new YamlAttributeOverridesInspector(inner, overrides.Clone()) : inner);
-            typeInspectorFactories.Add(typeof(ReadableAndWritablePropertiesTypeInspector), inner => new ReadableAndWritablePropertiesTypeInspector(inner));
 
             nodeDeserializerFactories = new LazyComponentRegistrationList<Nothing, INodeDeserializer>
             {
