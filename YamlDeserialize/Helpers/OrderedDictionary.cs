@@ -135,29 +135,9 @@ namespace YamlDotNet.Helpers
             list.RemoveAt(index);
         }
 
-#if !(NETCOREAPP3_1)
-#pragma warning disable 8767 // Nullability of reference types in type of parameter ... doesn't match implicitly implemented member
-#endif
-
         public bool TryGetValue(TKey key, out TValue value) => dictionary.TryGetValue(key, out value);
 
-#if !(NETCOREAPP3_1)
-#pragma warning restore 8767
-#endif
-
         IEnumerator IEnumerable.GetEnumerator() => list.GetEnumerator();
-
-
-        [OnDeserialized]
-        internal void OnDeserializedMethod(StreamingContext context)
-        {
-            // Reconstruct the dictionary from the serialized list
-            dictionary = new Dictionary<TKey, TValue>();
-            foreach (var kvp in list)
-            {
-                dictionary[kvp.Key] = kvp.Value;
-            }
-        }
 
         private class KeyCollection : ICollection<TKey>
         {

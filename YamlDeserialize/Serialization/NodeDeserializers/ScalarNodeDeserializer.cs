@@ -33,6 +33,21 @@ namespace YamlDotNet.Serialization.NodeDeserializers
     {
         private const string BooleanTruePattern = "^(true|y|yes|on)$";
         private const string BooleanFalsePattern = "^(false|n|no|off)$";
+        private static readonly NumberFormatInfo NumberFormat = new NumberFormatInfo
+        {
+            CurrencyDecimalSeparator = ".",
+            CurrencyGroupSeparator = "_",
+            CurrencyGroupSizes = new[] { 3 },
+            CurrencySymbol = string.Empty,
+            CurrencyDecimalDigits = 99,
+            NumberDecimalSeparator = ".",
+            NumberGroupSeparator = "_",
+            NumberGroupSizes = new[] { 3 },
+            NumberDecimalDigits = 99,
+            NaNSymbol = ".nan",
+            PositiveInfinitySymbol = ".inf",
+            NegativeInfinitySymbol = "-.inf"
+        };
 
         bool INodeDeserializer.Deserialize(IParser parser, Type expectedType, Func<IParser, Type, object> nestedObjectDeserializer, out object value)
         {
@@ -70,15 +85,15 @@ namespace YamlDotNet.Serialization.NodeDeserializers
                     break;
 
                 case TypeCode.Single:
-                    value = float.Parse(scalar.Value, YamlFormatter.NumberFormat);
+                    value = float.Parse(scalar.Value, NumberFormat);
                     break;
 
                 case TypeCode.Double:
-                    value = double.Parse(scalar.Value, YamlFormatter.NumberFormat);
+                    value = double.Parse(scalar.Value, NumberFormat);
                     break;
 
                 case TypeCode.Decimal:
-                    value = decimal.Parse(scalar.Value, YamlFormatter.NumberFormat);
+                    value = decimal.Parse(scalar.Value, NumberFormat);
                     break;
 
                 case TypeCode.String:
@@ -207,7 +222,7 @@ namespace YamlDotNet.Serialization.NodeDeserializers
                         break;
 
                     case 16:
-                        result = ulong.Parse(numberBuilder.ToString(), NumberStyles.HexNumber, YamlFormatter.NumberFormat);
+                        result = ulong.Parse(numberBuilder.ToString(), NumberStyles.HexNumber, NumberFormat);
                         break;
 
                     case 10:
