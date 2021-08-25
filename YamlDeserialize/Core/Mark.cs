@@ -92,13 +92,10 @@ namespace YamlDotNet.Core
         }
 
         /// <summary />
-        public bool Equals(Mark other)
-        {
-            return other != null
+        public bool Equals(Mark other) => other != null
                 && Index == other.Index
                 && Line == other.Line
                 && Column == other.Column;
-        }
 
         /// <summary />
         public override int GetHashCode()

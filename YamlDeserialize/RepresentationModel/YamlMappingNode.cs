@@ -43,13 +43,7 @@ namespace YamlDotNet.RepresentationModel
         /// Gets the children of the current node.
         /// </summary>
         /// <value>The children.</value>
-        public IOrderedDictionary<YamlNode, YamlNode> Children
-        {
-            get
-            {
-                return children;
-            }
-        }
+        public IOrderedDictionary<YamlNode, YamlNode> Children => children;
 
         /// <summary>
         /// Gets or sets the style of the node.
