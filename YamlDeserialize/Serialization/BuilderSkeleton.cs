@@ -20,9 +20,6 @@
 // SOFTWARE.
 
 using System;
-using System.Collections.Generic;
-using YamlDotNet.Core;
-using YamlDotNet.Serialization.Converters;
 using YamlDotNet.Serialization.NamingConventions;
 
 namespace YamlDotNet.Serialization
@@ -33,21 +30,9 @@ namespace YamlDotNet.Serialization
     public abstract class BuilderSkeleton<TBuilder> where TBuilder : BuilderSkeleton<TBuilder>
     {
         internal INamingConvention namingConvention = NullNamingConvention.Instance;
-        internal ITypeResolver typeResolver;
-        internal readonly YamlAttributeOverrides overrides;
-        internal readonly LazyComponentRegistrationList<Nothing, IYamlTypeConverter> typeConverterFactories;
 
         internal BuilderSkeleton(ITypeResolver typeResolver)
         {
-            overrides = new YamlAttributeOverrides();
-
-            typeConverterFactories = new LazyComponentRegistrationList<Nothing, IYamlTypeConverter>
-            {
-                { typeof(GuidConverter), _ => new GuidConverter(false) },
-                { typeof(SystemTypeConverter), _ => new SystemTypeConverter() }
-            };
-
-            this.typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
         }
 
         protected abstract TBuilder Self { get; }
@@ -60,8 +45,6 @@ namespace YamlDotNet.Serialization
             this.namingConvention = namingConvention ?? throw new ArgumentNullException(nameof(namingConvention));
             return Self;
         }
-
-        protected IEnumerable<IYamlTypeConverter> BuildTypeConverters() => typeConverterFactories.BuildComponentList();
     }
 
     /// <summary>

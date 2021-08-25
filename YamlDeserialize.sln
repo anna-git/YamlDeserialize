@@ -28,4 +28,7 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1F980CEB-165E-45B4-93F8-876F01AF37DA}
 	EndGlobalSection
+	GlobalSection(NDepend) = preSolution
+		Project = ".\YamlDeserialize1.ndproj"
+	EndGlobalSection
 EndGlobal

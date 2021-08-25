@@ -42,17 +42,11 @@ namespace YamlDotNet.Serialization
                 PropertyName = propertyName;
             }
 
-            public override bool Equals(object obj)
-            {
-                return obj is AttributeKey other
+            public override bool Equals(object obj) => obj is AttributeKey other
                     && AttributeType.Equals(other.AttributeType)
                     && PropertyName.Equals(other.PropertyName);
-            }
 
-            public override int GetHashCode()
-            {
-                return HashCode.CombineHashCodes(AttributeType.GetHashCode(), PropertyName.GetHashCode());
-            }
+            public override int GetHashCode() => HashCode.CombineHashCodes(AttributeType.GetHashCode(), PropertyName.GetHashCode());
         }
 
         private sealed class AttributeMapping
@@ -73,10 +67,7 @@ namespace YamlDotNet.Serialization
                     && Attribute.Equals(other.Attribute);
             }
 
-            public override int GetHashCode()
-            {
-                return HashCode.CombineHashCodes(RegisteredType.GetHashCode(), Attribute.GetHashCode());
-            }
+            public override int GetHashCode() => HashCode.CombineHashCodes(RegisteredType.GetHashCode(), Attribute.GetHashCode());
 
             /// <summary>
             /// Checks whether this mapping matches the specified type, and returns a value indicating the match priority.

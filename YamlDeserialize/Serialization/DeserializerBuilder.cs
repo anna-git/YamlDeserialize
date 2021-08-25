@@ -40,7 +40,6 @@ namespace YamlDotNet.Serialization
     {
         private Lazy<IObjectFactory> objectFactory;
         private readonly LazyComponentRegistrationList<Nothing, INodeDeserializer> nodeDeserializerFactories;
-        private readonly Dictionary<TagName, Type> tagMappings;
         private readonly Dictionary<Type, Type> typeMappings;
 
         /// <summary>
@@ -51,20 +50,8 @@ namespace YamlDotNet.Serialization
         {
             typeMappings = new Dictionary<Type, Type>();
             objectFactory = new Lazy<IObjectFactory>(() => new DefaultObjectFactory(typeMappings), true);
-
-            tagMappings = new Dictionary<TagName, Type>
-            {
-                { FailsafeSchema.Tags.Map, typeof(Dictionary<object, object>) },
-                { FailsafeSchema.Tags.Str, typeof(string) },
-                { JsonSchema.Tags.Bool, typeof(bool) },
-                { JsonSchema.Tags.Float, typeof(double) },
-                { JsonSchema.Tags.Int, typeof(int) },
-                { DefaultSchema.Tags.Timestamp, typeof(DateTime) }
-            };
-
             nodeDeserializerFactories = new LazyComponentRegistrationList<Nothing, INodeDeserializer>
             {
-                { typeof(TypeConverterNodeDeserializer), _ => new TypeConverterNodeDeserializer(BuildTypeConverters()) },
                 { typeof(NullNodeDeserializer), _ => new NullNodeDeserializer() },
                 { typeof(ScalarNodeDeserializer), _ => new ScalarNodeDeserializer() },
                 { typeof(ArrayNodeDeserializer), _ => new ArrayNodeDeserializer() },
@@ -74,26 +61,18 @@ namespace YamlDotNet.Serialization
             };
         }
 
-        protected override DeserializerBuilder Self { get { return this; } }
+        protected override DeserializerBuilder Self => this;
 
         /// <summary>
         /// Creates a new <see cref="Deserializer" /> according to the current configuration.
         /// </summary>
-        public IDeserializer Build()
-        {
-            return Deserializer.FromValueDeserializer(BuildValueDeserializer());
-        }
+        public IDeserializer Build() => Deserializer.FromValueDeserializer(BuildValueDeserializer());
 
         /// <summary>
         /// Creates a new <see cref="IValueDeserializer" /> that implements the current configuration.
         /// This method is available for advanced scenarios. The preferred way to customize the behavior of the
         /// deserializer is to use the <see cref="Build" /> method.
         /// </summary>
-        public IValueDeserializer BuildValueDeserializer()
-        {
-            return new AliasValueDeserializer(
-                new NodeValueDeserializer(nodeDeserializerFactories.BuildComponentList())
-            );
-        }
+        public IValueDeserializer BuildValueDeserializer() => new AliasValueDeserializer(new NodeValueDeserializer(nodeDeserializerFactories.BuildComponentList()));
     }
 }
