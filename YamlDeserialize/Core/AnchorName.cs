@@ -22,7 +22,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace YamlDotNet.Core
+namespace YamlDeserializer.Core
 {
     public struct AnchorName : IEquatable<AnchorName>
     {

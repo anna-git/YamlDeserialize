@@ -24,13 +24,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using YamlDotNet.Core;
-using YamlDotNet.Core.Events;
-using YamlDotNet.Helpers;
-using YamlDotNet.Serialization;
-using static YamlDotNet.Core.HashCode;
+using YamlDeserializer.Core;
+using YamlDeserializer.Core.Events;
+using YamlDeserializer.Helpers;
+using YamlDeserializer.Serialization;
+using static YamlDeserializer.Core.HashCode;
 
-namespace YamlDotNet.RepresentationModel
+namespace YamlDeserializer.RepresentationModel
 {
     /// <summary>
     /// Represents a mapping node in the YAML document.

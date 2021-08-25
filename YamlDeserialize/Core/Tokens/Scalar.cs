@@ -22,7 +22,7 @@
 
 using System;
 
-namespace YamlDotNet.Core.Tokens
+namespace YamlDeserializer.Core.Tokens
 {
     /// <summary>
     /// Represents a scalar token.

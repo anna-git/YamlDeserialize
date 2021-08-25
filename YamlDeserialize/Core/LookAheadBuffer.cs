@@ -22,9 +22,9 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using YamlDotNet.Helpers;
+using YamlDeserializer.Helpers;
 
-namespace YamlDotNet.Core
+namespace YamlDeserializer.Core
 {
     /// <summary>
     /// Provides access to a stream and allows to peek at the next characters,

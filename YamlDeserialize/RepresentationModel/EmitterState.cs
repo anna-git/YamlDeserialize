@@ -20,9 +20,9 @@
 // SOFTWARE.
 
 using System.Collections.Generic;
-using YamlDotNet.Core;
+using YamlDeserializer.Core;
 
-namespace YamlDotNet.RepresentationModel
+namespace YamlDeserializer.RepresentationModel
 {
     /// <summary>
     /// Holds state that is used when emitting a stream.

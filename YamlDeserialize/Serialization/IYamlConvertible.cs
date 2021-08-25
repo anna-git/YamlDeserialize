@@ -20,9 +20,9 @@
 // SOFTWARE.
 
 using System;
-using YamlDotNet.Core;
+using YamlDeserializer.Core;
 
-namespace YamlDotNet.Serialization
+namespace YamlDeserializer.Serialization
 {
     /// <summary>
     /// Allows an object to customize how it is serialized and deserialized.

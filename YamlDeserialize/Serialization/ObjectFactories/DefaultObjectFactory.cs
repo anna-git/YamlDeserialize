@@ -23,7 +23,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace YamlDotNet.Serialization.ObjectFactories
+namespace YamlDeserializer.Serialization.ObjectFactories
 {
     /// <summary>
     /// Creates objects using Activator.CreateInstance.

@@ -19,7 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-namespace YamlDotNet.Core.Events
+namespace YamlDeserializer.Core.Events
 {
     /// <summary>
     /// Represents an alias event.
@@ -77,9 +77,6 @@ namespace YamlDotNet.Core.Events
         /// Invokes run-time type specific Visit() method of the specified visitor.
         /// </summary>
         /// <param name="visitor">visitor, may not be null.</param>
-        public override void Accept(IParsingEventVisitor visitor)
-        {
-            visitor.Visit(this);
-        }
+        public override void Accept(IParsingEventVisitor visitor) => visitor.Visit(this);
     }
 }

@@ -22,7 +22,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace YamlDotNet.Core.Tokens
+namespace YamlDeserializer.Core.Tokens
 {
     /// <summary>
     /// Represents a tag directive token.

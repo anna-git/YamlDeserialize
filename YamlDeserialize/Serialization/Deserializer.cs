@@ -21,11 +21,11 @@
 
 using System;
 using System.IO;
-using YamlDotNet.Core;
-using YamlDotNet.Core.Events;
-using YamlDotNet.Serialization.Utilities;
+using YamlDeserializer.Core;
+using YamlDeserializer.Core.Events;
+using YamlDeserializer.Serialization.Utilities;
 
-namespace YamlDotNet.Serialization
+namespace YamlDeserializer.Serialization
 {
     /// <summary>
     /// Deserializes objects from the YAML format.

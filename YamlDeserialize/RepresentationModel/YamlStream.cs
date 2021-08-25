@@ -21,10 +21,10 @@
 
 using System.Collections.Generic;
 using System.IO;
-using YamlDotNet.Core;
-using YamlDotNet.Core.Events;
+using YamlDeserializer.Core;
+using YamlDeserializer.Core.Events;
 
-namespace YamlDotNet.RepresentationModel
+namespace YamlDeserializer.RepresentationModel
 {
     /// <summary>
     /// Represents an YAML stream.

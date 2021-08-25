@@ -21,7 +21,7 @@
 
 using System;
 
-namespace YamlDotNet.Core
+namespace YamlDeserializer.Core
 {
     /// <summary>
     /// Exception that is thrown when an infinite recursion is detected.

@@ -21,9 +21,9 @@
 
 using System;
 using System.Collections;
-using YamlDotNet.Core;
+using YamlDeserializer.Core;
 
-namespace YamlDotNet.Serialization.NodeDeserializers
+namespace YamlDeserializer.Serialization.NodeDeserializers
 {
     public sealed class ArrayNodeDeserializer : INodeDeserializer
     {

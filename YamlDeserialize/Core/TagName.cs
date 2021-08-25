@@ -21,7 +21,7 @@
 
 using System;
 
-namespace YamlDotNet.Core
+namespace YamlDeserializer.Core
 {
     public struct TagName : IEquatable<TagName>
     {

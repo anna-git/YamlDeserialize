@@ -22,11 +22,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using YamlDotNet.Serialization.NodeDeserializers;
-using YamlDotNet.Serialization.ObjectFactories;
-using YamlDotNet.Serialization.ValueDeserializers;
+using YamlDeserializer.Serialization.NodeDeserializers;
+using YamlDeserializer.Serialization.ObjectFactories;
+using YamlDeserializer.Serialization.ValueDeserializers;
 
-namespace YamlDotNet.Serialization
+namespace YamlDeserializer.Serialization
 {
     /// <summary>
     /// Creates and configures instances of <see cref="Deserializer" />.

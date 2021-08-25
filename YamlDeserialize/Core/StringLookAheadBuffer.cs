@@ -21,7 +21,7 @@
 
 using System;
 
-namespace YamlDotNet.Core
+namespace YamlDeserializer.Core
 {
     internal sealed class StringLookAheadBuffer : ILookAheadBuffer
     {

@@ -23,12 +23,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using YamlDotNet.Core;
-using YamlDotNet.Core.Events;
-using YamlDotNet.Serialization;
-using static YamlDotNet.Core.HashCode;
+using YamlDeserializer.Core;
+using YamlDeserializer.Core.Events;
+using YamlDeserializer.Serialization;
+using static YamlDeserializer.Core.HashCode;
 
-namespace YamlDotNet.RepresentationModel
+namespace YamlDeserializer.RepresentationModel
 {
     /// <summary>
     /// Represents a sequence node in the YAML document.

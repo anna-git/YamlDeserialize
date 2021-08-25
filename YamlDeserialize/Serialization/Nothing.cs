@@ -20,7 +20,7 @@
 // SOFTWARE.
 
 
-namespace YamlDotNet.Serialization
+namespace YamlDeserializer.Serialization
 {
     /// <summary>
     /// An empty type for cases where a type needs to be provided but won't be used.

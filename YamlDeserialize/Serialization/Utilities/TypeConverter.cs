@@ -28,7 +28,7 @@ using System.Globalization;
 using System.Reflection;
 using System.ComponentModel;
 
-namespace YamlDotNet.Serialization.Utilities
+namespace YamlDeserializer.Serialization.Utilities
 {
     /// <summary>
     /// Performs type conversions using every standard provided by the .NET library.
@@ -53,10 +53,7 @@ namespace YamlDotNet.Serialization.Utilities
         /// <param name="value">The value to convert.</param>
         /// <param name="provider">The provider.</param>
         /// <returns></returns>
-        public static T ChangeType<T>(object value, IFormatProvider provider)
-        {
-            return (T)ChangeType(value, typeof(T), provider); // This cast should always be valid
-        }
+        public static T ChangeType<T>(object value, IFormatProvider provider) => (T)ChangeType(value, typeof(T), provider); // This cast should always be valid
 
         /// <summary>
         /// Converts the specified value.
@@ -65,10 +62,7 @@ namespace YamlDotNet.Serialization.Utilities
         /// <param name="value">The value to convert.</param>
         /// <param name="culture">The culture.</param>
         /// <returns></returns>
-        public static T ChangeType<T>(object value, CultureInfo culture)
-        {
-            return (T)ChangeType(value, typeof(T), culture); // This cast should always be valid
-        }
+        public static T ChangeType<T>(object value, CultureInfo culture) => (T)ChangeType(value, typeof(T), culture); // This cast should always be valid
 
         /// <summary>
         /// Converts the specified value using the invariant culture.
@@ -76,10 +70,7 @@ namespace YamlDotNet.Serialization.Utilities
         /// <param name="value">The value to convert.</param>
         /// <param name="destinationType">The type to which the value is to be converted.</param>
         /// <returns></returns>
-        public static object ChangeType(object value, Type destinationType)
-        {
-            return ChangeType(value, destinationType, CultureInfo.InvariantCulture);
-        }
+        public static object ChangeType(object value, Type destinationType) => ChangeType(value, destinationType, CultureInfo.InvariantCulture);
 
         /// <summary>
         /// Converts the specified value.
@@ -88,12 +79,8 @@ namespace YamlDotNet.Serialization.Utilities
         /// <param name="destinationType">The type to which the value is to be converted.</param>
         /// <param name="provider">The format provider.</param>
         /// <returns></returns>
-        public static object ChangeType(object value, Type destinationType, IFormatProvider provider)
-        {
-            throw new NotImplementedException();
-            // todo
-            // return ChangeType(value, destinationType, new CultureInfoAdapter(CultureInfo.CurrentCulture, provider));
-        }
+        public static object ChangeType(object value, Type destinationType, IFormatProvider provider) => throw new NotImplementedException();
+        // todo// return ChangeType(value, destinationType, new CultureInfoAdapter(CultureInfo.CurrentCulture, provider));
 
         /// <summary>
         /// Converts the specified value.
@@ -236,36 +223,3 @@ namespace YamlDotNet.Serialization.Utilities
         }
     }
 }
-
-#if !(NETSTANDARD1_3 || UNITY)
-namespace YamlDotNet.Serialization.Utilities
-{
-    using System.Linq;
-
-    partial class TypeConverter
-    {
-        /// <summary>
-        /// Registers a <see cref="System.ComponentModel.TypeConverter"/> dynamically.
-        /// </summary>
-        /// <typeparam name="TConvertible">The type to which the converter should be associated.</typeparam>
-        /// <typeparam name="TConverter">The type of the converter.</typeparam>
-        ////#if !(NETCOREAPP3_1 || NETSTANDARD2_1 || NETSTANDARD1_3)
-        ////        [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.LinkDemand, Name = "FullTrust")]
-        ////#endif
-        // todo
-        public static void RegisterTypeConverter<TConvertible, TConverter>()
-            where TConverter : System.ComponentModel.TypeConverter
-        {
-            var alreadyRegistered = TypeDescriptor.GetAttributes(typeof(TConvertible))
-                .OfType<TypeConverterAttribute>()
-                .Any(a => a.ConverterTypeName == typeof(TConverter).AssemblyQualifiedName);
-
-            if (!alreadyRegistered)
-            {
-                TypeDescriptor.AddAttributes(typeof(TConvertible), new TypeConverterAttribute(typeof(TConverter)));
-            }
-        }
-
-    }
-}
-#endif

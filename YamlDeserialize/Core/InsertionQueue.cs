@@ -23,9 +23,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using YamlDotNet.Helpers;
+using YamlDeserializer.Helpers;
 
-namespace YamlDotNet.Core
+namespace YamlDeserializer.Core
 {
     /// <summary>
     /// Generic queue on which items may be inserted

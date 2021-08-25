@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
+using YamlDeserializer.Serialization;
+using YamlDeserializer.Serialization.NamingConventions;
 
 namespace YamlDeserialize.Console
 {
@@ -10,9 +10,9 @@ namespace YamlDeserialize.Console
         static void Main(string[] args)
         {
             var deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build();
-            var sr = Assembly.GetExecutingAssembly().GetManifestResourceStream("YamlDeserialize.Console.test.yml");
+            var sr = Assembly.GetExecutingAssembly().GetManifestResourceStream("YamlDeserialize.Console.rules.yml");
             var reader = new StreamReader(sr);
             var res = deserializer.Deserialize(reader);
-        }
+         }
     }
 }

@@ -23,9 +23,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using YamlDotNet.Core.Events;
+using YamlDeserializer.Core.Events;
 
-namespace YamlDotNet.Core
+namespace YamlDeserializer.Core
 {
     /// <summary>
     /// Simple implementation of <see cref="IParser"/> that implements merging: http://yaml.org/type/merge.html
@@ -252,60 +252,34 @@ namespace YamlDotNet.Core
                 return clonedEvent;
             }
 
-            void IParsingEventVisitor.Visit(AnchorAlias e)
-            {
-                clonedEvent = new AnchorAlias(e.Value, e.Start, e.End);
-            }
+            void IParsingEventVisitor.Visit(AnchorAlias e) => clonedEvent = new AnchorAlias(e.Value, e.Start, e.End);
 
-            void IParsingEventVisitor.Visit(StreamStart e)
-            {
-                throw new NotSupportedException();
-            }
+            void IParsingEventVisitor.Visit(StreamStart e) => throw new NotSupportedException();
 
-            void IParsingEventVisitor.Visit(StreamEnd e)
-            {
-                throw new NotSupportedException();
-            }
+            void IParsingEventVisitor.Visit(StreamEnd e) => throw new NotSupportedException();
 
-            void IParsingEventVisitor.Visit(DocumentStart e)
-            {
-                throw new NotSupportedException();
-            }
+            void IParsingEventVisitor.Visit(DocumentStart e) => throw new NotSupportedException();
 
-            void IParsingEventVisitor.Visit(DocumentEnd e)
-            {
-                throw new NotSupportedException();
-            }
+            void IParsingEventVisitor.Visit(DocumentEnd e) => throw new NotSupportedException();
 
             void IParsingEventVisitor.Visit(Scalar e)
             {
                 clonedEvent = new Scalar(AnchorName.Empty, e.Tag, e.Value, e.Style, e.IsPlainImplicit, e.IsQuotedImplicit, e.Start, e.End);
             }
 
-            void IParsingEventVisitor.Visit(SequenceStart e)
-            {
-                clonedEvent = new SequenceStart(AnchorName.Empty, e.Tag, e.IsImplicit, e.Style, e.Start, e.End);
-            }
+            void IParsingEventVisitor.Visit(SequenceStart e) => clonedEvent = new SequenceStart(AnchorName.Empty, e.Tag, e.IsImplicit, e.Style, e.Start, e.End);
 
             void IParsingEventVisitor.Visit(SequenceEnd e)
             {
-                clonedEvent = new SequenceEnd(e.Start, e.End);
+                SequenceEnd sequenceEnd = new SequenceEnd(e.Start, e.End);
+                clonedEvent = sequenceEnd;
             }
 
-            void IParsingEventVisitor.Visit(MappingStart e)
-            {
-                clonedEvent = new MappingStart(AnchorName.Empty, e.Tag, e.IsImplicit, e.Style, e.Start, e.End);
-            }
+            void IParsingEventVisitor.Visit(MappingStart e) => clonedEvent = new MappingStart(AnchorName.Empty, e.Tag, e.IsImplicit, e.Style, e.Start, e.End);
 
-            void IParsingEventVisitor.Visit(MappingEnd e)
-            {
-                clonedEvent = new MappingEnd(e.Start, e.End);
-            }
+            void IParsingEventVisitor.Visit(MappingEnd e) => clonedEvent = new MappingEnd(e.Start, e.End);
 
-            void IParsingEventVisitor.Visit(Comment e)
-            {
-                throw new NotSupportedException();
-            }
+            void IParsingEventVisitor.Visit(Comment e) => throw new NotSupportedException();
         }
     }
 }

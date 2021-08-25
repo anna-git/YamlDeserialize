@@ -24,7 +24,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace YamlDotNet.Helpers
+namespace YamlDeserializer.Helpers
 {
     [Serializable]
     internal class OrderedDictionary<TKey, TValue> : IOrderedDictionary<TKey, TValue>

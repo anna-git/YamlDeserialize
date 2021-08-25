@@ -21,7 +21,7 @@
 
 using System.Collections.Generic;
 
-namespace YamlDotNet.Helpers
+namespace YamlDeserializer.Helpers
 {
     public interface IOrderedDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {

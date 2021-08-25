@@ -20,9 +20,9 @@
 // SOFTWARE.
 
 using System;
-using YamlDotNet.Serialization.NamingConventions;
+using YamlDeserializer.Serialization.NamingConventions;
 
-namespace YamlDotNet.Serialization
+namespace YamlDeserializer.Serialization
 {
     /// <summary>
     /// Common implementation of <see cref="SerializerBuilder" /> and <see cref="DeserializerBuilder" />.

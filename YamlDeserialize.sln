@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YamlDeserialize", "YamlDese
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YamlDeserialize.Console", "YamlDeserialize.Console\YamlDeserialize.Console.csproj", "{D035EFE8-ED91-4938-A6CF-97A64249AC5F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YamlDeserialize.UnitTests", "YamlDeserialize.UnitTests\YamlDeserialize.UnitTests.csproj", "{3DE5FA25-4915-42F9-8030-804A347F2F71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,14 +23,15 @@ Global
 		{D035EFE8-ED91-4938-A6CF-97A64249AC5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D035EFE8-ED91-4938-A6CF-97A64249AC5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D035EFE8-ED91-4938-A6CF-97A64249AC5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DE5FA25-4915-42F9-8030-804A347F2F71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DE5FA25-4915-42F9-8030-804A347F2F71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DE5FA25-4915-42F9-8030-804A347F2F71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DE5FA25-4915-42F9-8030-804A347F2F71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1F980CEB-165E-45B4-93F8-876F01AF37DA}
-	EndGlobalSection
-	GlobalSection(NDepend) = preSolution
-		Project = ".\YamlDeserialize1.ndproj"
 	EndGlobalSection
 EndGlobal
