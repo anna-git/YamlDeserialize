@@ -20,26 +20,29 @@
 // SOFTWARE.
 
 using System;
-using YamlDeserializer.Serialization.NamingConventions;
+using System.Collections.Generic;
+using YamlDeserializer.Core;
+using YamlDeserializer.Core.Events;
 
-namespace YamlDeserializer.Serialization
+namespace YamlDeserializer.Serialization.NodeTypeResolvers
 {
-    /// <summary>
-    /// Common implementation of <see cref="SerializerBuilder" /> and <see cref="DeserializerBuilder" />.
-    /// </summary>
-    public abstract class BuilderSkeleton<TBuilder> where TBuilder : BuilderSkeleton<TBuilder>
+    public sealed class TagNodeTypeResolver : INodeTypeResolver
     {
-        internal INamingConvention namingConvention = NullNamingConvention.Instance;
+        private readonly IDictionary<TagName, Type> tagMappings;
 
-        protected abstract TBuilder Self { get; }
-
-        /// <summary>
-        /// Sets the <see cref="INamingConvention" /> that will be used by the (de)serializer.
-        /// </summary>
-        public TBuilder WithNamingConvention(INamingConvention namingConvention)
+        public TagNodeTypeResolver(IDictionary<TagName, Type> tagMappings)
         {
-            this.namingConvention = namingConvention ?? throw new ArgumentNullException(nameof(namingConvention));
-            return Self;
+            this.tagMappings = tagMappings ?? throw new ArgumentNullException(nameof(tagMappings));
+        }
+
+        bool INodeTypeResolver.Resolve(NodeEvent nodeEvent, ref Type currentType)
+        {
+            if (nodeEvent != null && !nodeEvent.Tag.IsEmpty && tagMappings.TryGetValue(nodeEvent.Tag, out var predefinedType))
+            {
+                currentType = predefinedType;
+                return true;
+            }
+            return false;
         }
     }
 }

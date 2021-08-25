@@ -170,45 +170,18 @@ namespace YamlDeserializer.RepresentationModel
             }
         }
 
-        private void AssignAnchors()
-        {
-            var visitor = new AnchorAssigningVisitor();
-            visitor.AssignAnchors(this);
-        }
-
-        internal void Save(IEmitter emitter, bool assignAnchors = true)
-        {
-            if (assignAnchors)
-            {
-                AssignAnchors();
-            }
-
-            emitter.Emit(new DocumentStart());
-            RootNode.Save(emitter, new EmitterState());
-            emitter.Emit(new DocumentEnd(false));
-        }
-
         /// <summary>
         /// Accepts the specified visitor by calling the appropriate Visit method on it.
         /// </summary>
         /// <param name="visitor">
         /// A <see cref="IYamlVisitor"/>.
         /// </param>
-        public void Accept(IYamlVisitor visitor)
-        {
-            visitor.Visit(this);
-        }
+        public void Accept(IYamlVisitor visitor) => visitor.Visit(this);
 
         /// <summary>
         /// Gets all nodes from the document.
         /// <see cref="MaximumRecursionLevelReachedException"/> is thrown if an infinite recursion is detected.
         /// </summary>
-        public IEnumerable<YamlNode> AllNodes
-        {
-            get
-            {
-                return RootNode.AllNodes;
-            }
-        }
+        public IEnumerable<YamlNode> AllNodes => RootNode.AllNodes;
     }
 }

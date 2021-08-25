@@ -4,17 +4,22 @@ using System.Linq;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 using System.Collections.Generic;
+using YamlDotNet.Serialization.NodeTypeResolvers;
 
 namespace YamlDeserialize.UnitTests
 {
     public class UnitTest1
     {
-        [Fact]
-        public void DeserializeSimple()
+        [Theory]
+        [InlineData("rules")]
+        [InlineData("tags")]
+        [InlineData("test")]
+        public void DeserializeSimple(string filename)
         {
-            using (var sr = new StreamReader("rules.yml"))
+            using (var sr = new StreamReader($"{filename}.yml"))
             {
-                var deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build();
+                var deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).
+                    Build();
                 var resultObj = deserializer.Deserialize(sr);
                 var result = resultObj as Dictionary<object, object>;
                 sr.BaseStream.Seek(0, SeekOrigin.Begin);
@@ -27,7 +32,6 @@ namespace YamlDeserialize.UnitTests
                 bool v = CompareDictionaries(result, resultdd);
                 Xunit.Assert.True(v);
             }
-
         }
 
         public bool CompareDictionaries(IDictionary<object, object> model, IDictionary<object, object> dic2)
@@ -77,17 +81,19 @@ namespace YamlDeserialize.UnitTests
             {
                 if (current[i].GetType() != other[i].GetType())
                     return false;
-                if(current[i] is IDictionary<object, object> innerdic)
+                else if(current[i] is IDictionary<object, object> innerdic)
                 {
                     var res = CompareDictionaries(innerdic, other[i] as IDictionary<object, object>);
                     if (!res)
                         return false;
                 }
-                if (current[i] is string ci)
+                else if (current[i] is string ci)
                 {
-                    if (string.Compare((string)current[i], (string)other[i], false) != 0)
+                    if (string.Compare(ci, (string)other[i], false) != 0)
                         return false;
                 }
+                else if (current[i] != other[i])
+                    return false;
             }
             return true;
         }

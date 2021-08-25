@@ -19,18 +19,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System;
+using System.Collections.Generic;
 using YamlDeserializer.Core.Events;
 
-namespace YamlDeserializer.Core
+namespace YamlDeserializer.Serialization.NodeTypeResolvers
 {
-    /// <summary>
-    /// Represents a YAML stream emitter.
-    /// </summary>
-    public interface IEmitter
+    public class MappingNodeTypeResolver : INodeTypeResolver
     {
-        /// <summary>
-        /// Emits an event.
-        /// </summary>
-        void Emit(ParsingEvent @event);
+        private readonly IDictionary<Type, Type> _mappings;
+
+        public MappingNodeTypeResolver(IDictionary<Type, Type> mappings)
+        {
+            if (mappings == null) throw new ArgumentNullException(nameof(mappings));
+
+            foreach (var pair in mappings)
+            {
+                if (!pair.Key.IsAssignableFrom(pair.Value))
+                {
+                    throw new InvalidOperationException($"Type '{pair.Value}' does not implement type '{pair.Key}'.");
+                }
+            }
+
+            _mappings = mappings;
+        }
+
+        public bool Resolve(NodeEvent nodeEvent, ref Type currentType)
+        {
+            if (_mappings.TryGetValue(currentType, out var concreteType))
+            {
+                currentType = concreteType;
+                return true;
+            }
+
+            return false;
+        }
     }
 }

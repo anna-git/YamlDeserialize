@@ -49,16 +49,6 @@ namespace YamlDeserializer.RepresentationModel
         }
 
         /// <summary>
-        /// Saves the current node to the specified emitter.
-        /// </summary>
-        /// <param name="emitter">The emitter where the node is to be saved.</param>
-        /// <param name="state">The state.</param>
-        internal override void Emit(IEmitter emitter, EmitterState state)
-        {
-            throw new NotSupportedException("A YamlAliasNode is an implementation detail and should never be saved.");
-        }
-
-        /// <summary>
         /// Accepts the specified visitor by calling the appropriate Visit method on it.
         /// </summary>
         /// <param name="visitor">

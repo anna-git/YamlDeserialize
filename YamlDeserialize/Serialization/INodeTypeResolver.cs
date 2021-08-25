@@ -20,26 +20,21 @@
 // SOFTWARE.
 
 using System;
-using YamlDeserializer.Serialization.NamingConventions;
+using YamlDeserializer.Core.Events;
 
 namespace YamlDeserializer.Serialization
 {
-    /// <summary>
-    /// Common implementation of <see cref="SerializerBuilder" /> and <see cref="DeserializerBuilder" />.
-    /// </summary>
-    public abstract class BuilderSkeleton<TBuilder> where TBuilder : BuilderSkeleton<TBuilder>
+    public interface INodeTypeResolver
     {
-        internal INamingConvention namingConvention = NullNamingConvention.Instance;
-
-        protected abstract TBuilder Self { get; }
-
         /// <summary>
-        /// Sets the <see cref="INamingConvention" /> that will be used by the (de)serializer.
+        /// Determines the type of the specified node.
         /// </summary>
-        public TBuilder WithNamingConvention(INamingConvention namingConvention)
-        {
-            this.namingConvention = namingConvention ?? throw new ArgumentNullException(nameof(namingConvention));
-            return Self;
-        }
+        /// <param name="nodeEvent">The node to be deserialized.</param>
+        /// <param name="currentType">The type that has been determined so far.</param>
+        /// <returns>
+        /// true if <paramref name="currentType"/> has been resolved completely;
+        /// false if the next type <see cref="INodeTypeResolver"/> should be invoked.
+        /// </returns>
+        bool Resolve(NodeEvent nodeEvent, ref Type currentType);
     }
 }

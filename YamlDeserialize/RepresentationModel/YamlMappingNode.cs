@@ -220,21 +220,6 @@ namespace YamlDeserializer.RepresentationModel
             }
         }
 
-        /// <summary>
-        /// Saves the current node to the specified emitter.
-        /// </summary>
-        /// <param name="emitter">The emitter where the node is to be saved.</param>
-        /// <param name="state">The state.</param>
-        internal override void Emit(IEmitter emitter, EmitterState state)
-        {
-            emitter.Emit(new MappingStart(Anchor, Tag, true, Style));
-            foreach (var entry in children)
-            {
-                entry.Key.Save(emitter, state);
-                entry.Value.Save(emitter, state);
-            }
-            emitter.Emit(new MappingEnd());
-        }
 
         /// <summary>
         /// Accepts the specified visitor by calling the appropriate Visit method on it.

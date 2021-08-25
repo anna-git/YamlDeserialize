@@ -30,30 +30,25 @@ namespace YamlDeserializer.Serialization.ValueDeserializers
     public sealed class NodeValueDeserializer : IValueDeserializer
     {
         private readonly IList<INodeDeserializer> deserializers;
+        private readonly IList<INodeTypeResolver> typeResolvers;
 
-        public NodeValueDeserializer(IList<INodeDeserializer> deserializers)
+        public NodeValueDeserializer(IList<INodeDeserializer> deserializers, IList<INodeTypeResolver> typeResolvers)
         {
             this.deserializers = deserializers ?? throw new ArgumentNullException(nameof(deserializers));
+            this.typeResolvers = typeResolvers ?? throw new ArgumentNullException(nameof(typeResolvers));
+
         }
 
         public object DeserializeValue(IParser parser, Type expectedType, SerializerState state, IValueDeserializer nestedObjectDeserializer)
         {
             parser.Accept<NodeEvent>(out var nodeEvent);
-            Type resultType = typeof(object);
-            if (nodeEvent is SequenceStart)
-            {
-                resultType = typeof(List<object>);
-            }
-            else if (nodeEvent is MappingStart)
-            {
-                resultType = typeof(Dictionary<object, object>);
-            }
+            var nodeType = GetTypeFromEvent(nodeEvent, expectedType);
 
             try
             {
                 foreach (var deserializer in deserializers)
                 {
-                    if (deserializer.Deserialize(parser, resultType, (r, t) => nestedObjectDeserializer.DeserializeValue(r, t, state, nestedObjectDeserializer), out var value))
+                    if (deserializer.Deserialize(parser, nodeType, (r, t) => nestedObjectDeserializer.DeserializeValue(r, t, state, nestedObjectDeserializer), out var value))
                     {
                         return TypeConverter.ChangeType(value, expectedType);
                     }
@@ -78,6 +73,17 @@ namespace YamlDeserializer.Serialization.ValueDeserializers
                 nodeEvent?.End ?? Mark.Empty,
                 $"No node deserializer was able to deserialize the node into type {expectedType.AssemblyQualifiedName}"
             );
+        }
+        private Type GetTypeFromEvent(NodeEvent nodeEvent, Type currentType)
+        {
+            foreach (var typeResolver in typeResolvers)
+            {
+                if (typeResolver.Resolve(nodeEvent, ref currentType))
+                {
+                    break;
+                }
+            }
+            return currentType;
         }
     }
 }

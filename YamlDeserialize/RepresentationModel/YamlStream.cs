@@ -104,42 +104,6 @@ namespace YamlDeserializer.RepresentationModel
         }
 
         /// <summary>
-        /// Saves the stream to the specified output.
-        /// </summary>
-        /// <param name="output">The output.</param>
-        public void Save(TextWriter output)
-        {
-            Save(output, true);
-        }
-
-        /// <summary>
-        /// Saves the stream to the specified output.
-        /// </summary>
-        /// <param name="output">The output.</param>
-        /// <param name="assignAnchors">Indicates whether or not to assign node anchors.</param>
-        public void Save(TextWriter output, bool assignAnchors)
-        {
-            Save(new Emitter(output), assignAnchors);
-        }
-
-        /// <summary>
-        /// Saves the stream to the specified emitter.
-        /// </summary>
-        /// <param name="emitter">The emitter.</param>
-        /// <param name="assignAnchors">Indicates whether or not to assign node anchors.</param>
-        public void Save(IEmitter emitter, bool assignAnchors)
-        {
-            emitter.Emit(new StreamStart());
-
-            foreach (var document in documents)
-            {
-                document.Save(emitter, assignAnchors);
-            }
-
-            emitter.Emit(new StreamEnd());
-        }
-
-        /// <summary>
         /// Accepts the specified visitor by calling the appropriate Visit method on it.
         /// </summary>
         /// <param name="visitor">

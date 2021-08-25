@@ -22,8 +22,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using YamlDeserializer.Core;
 using YamlDeserializer.Serialization.NodeDeserializers;
+using YamlDeserializer.Serialization.NodeTypeResolvers;
 using YamlDeserializer.Serialization.ObjectFactories;
+using YamlDeserializer.Serialization.Schemas;
 using YamlDeserializer.Serialization.ValueDeserializers;
 
 namespace YamlDeserializer.Serialization
@@ -38,6 +41,8 @@ namespace YamlDeserializer.Serialization
     {
         private Lazy<IObjectFactory> objectFactory;
         private readonly LazyComponentRegistrationList<Nothing, INodeDeserializer> nodeDeserializerFactories;
+        private readonly LazyComponentRegistrationList<Nothing, INodeTypeResolver> nodeTypeResolverFactories;
+        private readonly Dictionary<TagName, Type> tagMappings;
         private readonly Dictionary<Type, Type> typeMappings;
 
         /// <summary>
@@ -45,6 +50,15 @@ namespace YamlDeserializer.Serialization
         /// </summary>
         public DeserializerBuilder()
         {
+            tagMappings = new Dictionary<TagName, Type>
+            {
+                { FailsafeSchema.Tags.Map, typeof(Dictionary<object, object>) },
+                { FailsafeSchema.Tags.Str, typeof(string) },
+                { JsonSchema.Tags.Bool, typeof(bool) },
+                { JsonSchema.Tags.Float, typeof(double) },
+                { JsonSchema.Tags.Int, typeof(int) },
+                { DefaultSchema.Tags.Timestamp, typeof(DateTime) }
+            };
             typeMappings = new Dictionary<Type, Type>();
             objectFactory = new Lazy<IObjectFactory>(() => new DefaultObjectFactory(typeMappings), true);
             nodeDeserializerFactories = new LazyComponentRegistrationList<Nothing, INodeDeserializer>
@@ -55,6 +69,15 @@ namespace YamlDeserializer.Serialization
                 { typeof(DictionaryNodeDeserializer), _ => new DictionaryNodeDeserializer(objectFactory.Value) },
                 { typeof(CollectionNodeDeserializer), _ => new CollectionNodeDeserializer(objectFactory.Value) },
                 { typeof(EnumerableNodeDeserializer), _ => new EnumerableNodeDeserializer() },
+            };
+
+            nodeTypeResolverFactories = new LazyComponentRegistrationList<Nothing, INodeTypeResolver>
+            {
+                { typeof(MappingNodeTypeResolver), _ => new MappingNodeTypeResolver(typeMappings) },
+                { typeof(YamlConvertibleTypeResolver), _ => new YamlConvertibleTypeResolver() },
+                { typeof(TagNodeTypeResolver), _ => new TagNodeTypeResolver(tagMappings) },
+                { typeof(PreventUnknownTagsNodeTypeResolver), _ => new PreventUnknownTagsNodeTypeResolver() },
+                { typeof(DefaultContainersNodeTypeResolver), _ => new DefaultContainersNodeTypeResolver() }
             };
         }
 
@@ -70,6 +93,6 @@ namespace YamlDeserializer.Serialization
         /// This method is available for advanced scenarios. The preferred way to customize the behavior of the
         /// deserializer is to use the <see cref="Build" /> method.
         /// </summary>
-        public IValueDeserializer BuildValueDeserializer() => new AliasValueDeserializer(new NodeValueDeserializer(nodeDeserializerFactories.Select(factory => factory(default)).ToList()));
+        public IValueDeserializer BuildValueDeserializer() => new AliasValueDeserializer(new NodeValueDeserializer(nodeDeserializerFactories.Select(factory => factory(default)).ToList(), nodeTypeResolverFactories.Select(factory => factory(default)).ToList()));
     }
 }

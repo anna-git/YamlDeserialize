@@ -19,27 +19,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-namespace YamlDeserializer.Core
+using System;
+using System.Collections.Generic;
+using YamlDeserializer.Core.Events;
+
+namespace YamlDeserializer.Serialization.NodeTypeResolvers
 {
-    internal enum EmitterState
+    public sealed class DefaultContainersNodeTypeResolver : INodeTypeResolver
     {
-        StreamStart,
-        StreamEnd,
-        FirstDocumentStart,
-        DocumentStart,
-        DocumentContent,
-        DocumentEnd,
-        FlowSequenceFirstItem,
-        FlowSequenceItem,
-        FlowMappingFirstKey,
-        FlowMappingKey,
-        FlowMappingSimpleValue,
-        FlowMappingValue,
-        BlockSequenceFirstItem,
-        BlockSequenceItem,
-        BlockMappingFirstKey,
-        BlockMappingKey,
-        BlockMappingSimpleValue,
-        BlockMappingValue
+        bool INodeTypeResolver.Resolve(NodeEvent nodeEvent, ref Type currentType)
+        {
+            if (currentType == typeof(object))
+            {
+                if (nodeEvent is SequenceStart)
+                {
+                    currentType = typeof(List<object>);
+                    return true;
+                }
+                if (nodeEvent is MappingStart)
+                {
+                    currentType = typeof(Dictionary<object, object>);
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

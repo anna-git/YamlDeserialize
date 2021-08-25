@@ -20,26 +20,15 @@
 // SOFTWARE.
 
 using System;
-using YamlDeserializer.Serialization.NamingConventions;
+using YamlDeserializer.Core.Events;
 
-namespace YamlDeserializer.Serialization
+namespace YamlDeserializer.Serialization.NodeTypeResolvers
 {
-    /// <summary>
-    /// Common implementation of <see cref="SerializerBuilder" /> and <see cref="DeserializerBuilder" />.
-    /// </summary>
-    public abstract class BuilderSkeleton<TBuilder> where TBuilder : BuilderSkeleton<TBuilder>
+    public sealed class YamlConvertibleTypeResolver : INodeTypeResolver
     {
-        internal INamingConvention namingConvention = NullNamingConvention.Instance;
-
-        protected abstract TBuilder Self { get; }
-
-        /// <summary>
-        /// Sets the <see cref="INamingConvention" /> that will be used by the (de)serializer.
-        /// </summary>
-        public TBuilder WithNamingConvention(INamingConvention namingConvention)
+        public bool Resolve(NodeEvent nodeEvent, ref Type currentType)
         {
-            this.namingConvention = namingConvention ?? throw new ArgumentNullException(nameof(namingConvention));
-            return Self;
+            return typeof(IYamlConvertible).IsAssignableFrom(currentType);
         }
     }
 }
