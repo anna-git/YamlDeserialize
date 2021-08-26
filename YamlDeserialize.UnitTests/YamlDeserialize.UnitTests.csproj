@@ -14,10 +14,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="YamlDotNet" Version="11.2.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\YamlDeserialize\YamlDeserialize.csproj" />
+    <ProjectReference Include="..\YamlDotNet\YamlDotNet.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="basic.end.yml">

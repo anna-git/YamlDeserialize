@@ -16,26 +16,30 @@ namespace YamlDeserialize.UnitTests
         [InlineData("aliases")]
         [InlineData("basic")]
         [InlineData("comments")]
+        [InlineData("basic.start")]
+        [InlineData("basic.end")]
         public void Deserialize(string filename)
         {
+            Dictionary<object, object> yamlDotNetResult = null;
+            Dictionary<object, object> ddyamlDotNetResult = null;
             using (var sr = new StreamReader($"{filename}.yml"))
             {
                 var deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).
                     Build();
                 var resultObj = deserializer.Deserialize(sr);
-                var result = resultObj as Dictionary<object, object>;
-                sr.BaseStream.Seek(0, SeekOrigin.Begin);
+                 yamlDotNetResult = resultObj as Dictionary<object, object>;
+            }
+            using (var sr = new StreamReader($"{filename}.yml"))
+            {
                 var ourDserializer = new YamlDeserializer.Serialization.DeserializerBuilder().WithNamingConvention(YamlDeserializer.Serialization.NamingConventions.CamelCaseNamingConvention.Instance).Build();
                 var resultddObj = ourDserializer.Deserialize(sr);
-                var resultdd = resultddObj as Dictionary<object, object>;
-                Xunit.Assert.NotNull(result);
-                Xunit.Assert.NotNull(resultdd);
-
-                bool aresame = Helper.CompareDictionaries(result, resultdd);
-                Xunit.Assert.True(aresame);
+                ddyamlDotNetResult = resultddObj as Dictionary<object, object>;
             }
-        }
+            Xunit.Assert.NotNull(yamlDotNetResult);
+            Xunit.Assert.NotNull(ddyamlDotNetResult);
 
-     
+            bool aresame = Helper.CompareDictionaries(yamlDotNetResult, ddyamlDotNetResult);
+            Xunit.Assert.True(aresame);
+        }
     }
 }
